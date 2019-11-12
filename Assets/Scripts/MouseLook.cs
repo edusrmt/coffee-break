@@ -13,7 +13,11 @@ public class MouseLook : MonoBehaviour
 	[HideInInspector]
     public float currentYRotation;
 	float xRotationV;
-	float yRotationV;
+	float yRotationV;    
+
+    void Start () {
+        Cursor.lockState = CursorLockMode.Locked;
+    }
 
     void Update () {
         xRotation -= Input.GetAxis("Mouse Y") * lookSensitivity;
@@ -25,5 +29,7 @@ public class MouseLook : MonoBehaviour
         currentYRotation = Mathf.SmoothDamp(currentYRotation, yRotation, ref yRotationV, lookSmoothDamp);
 
         transform.rotation = Quaternion.Euler(currentXRotation, currentYRotation, 0);
-    }
+
+        
+    }    
 }
