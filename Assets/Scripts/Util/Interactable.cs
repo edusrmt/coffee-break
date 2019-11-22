@@ -1,3 +1,3 @@
 ﻿public interface Interactable {
-    void onInteract ();
+    void OnInteract ();
 }

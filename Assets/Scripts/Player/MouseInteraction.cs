@@ -7,20 +7,16 @@ public class MouseInteraction : MonoBehaviour {
     [SerializeField]
     float interactionDistance = 2;
 
-    void Start() {
-        myCamera = GetComponent<Camera>();
-    }
-
     void Update() {
         if (Input.GetButtonDown("Fire1")) {
             RaycastHit hit;
-            Ray ray = myCamera.ScreenPointToRay(new Vector3(Screen.width / 2, Screen.height / 2, 0));
+            Ray ray = Camera.main.ScreenPointToRay(new Vector3(Screen.width / 2, Screen.height / 2, 0));
 
             if (Physics.Raycast(ray, out hit, interactionDistance)) {
                 MonoBehaviour script = isInteractable(hit.collider.gameObject);
 
                 if (script)
-                    ((Interactable)script).onInteract();
+                    ((Interactable)script).OnInteract();
             }
         }
     }

@@ -78,3 +78,6 @@ $RECYCLE.BIN/
 
 # Windows shortcuts
 *.lnk
+
+# Blender extra files
+*.blend[1-9]
