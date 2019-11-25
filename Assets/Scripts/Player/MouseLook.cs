@@ -13,13 +13,17 @@ public class MouseLook : MonoBehaviour
 	[HideInInspector]
     public float currentYRotation;
 	float xRotationV;
-	float yRotationV;    
+	float yRotationV;
+
+    public bool active = true;
 
     void Start () {
-        //Cursor.lockState = CursorLockMode.Locked;
+        Cursor.lockState = CursorLockMode.Locked;
     }
 
     void Update () {
+        if (!active) return;
+
         xRotation -= Input.GetAxis("Mouse Y") * lookSensitivity;
         yRotation += Input.GetAxis("Mouse X") * lookSensitivity;
 
@@ -28,8 +32,17 @@ public class MouseLook : MonoBehaviour
         currentXRotation = Mathf.SmoothDamp(currentXRotation, xRotation, ref xRotationV, lookSmoothDamp);
         currentYRotation = Mathf.SmoothDamp(currentYRotation, yRotation, ref yRotationV, lookSmoothDamp);
 
-        transform.rotation = Quaternion.Euler(currentXRotation, currentYRotation, 0);
+        transform.rotation = Quaternion.Euler(currentXRotation, currentYRotation, 0);        
+    } 
+    
+    public void ChangeLockState ()
+    {
+        active = !active;
 
-        
-    }    
+        if (Cursor.lockState == CursorLockMode.Locked) {
+            Cursor.lockState = CursorLockMode.None;
+        } else {
+            Cursor.lockState = CursorLockMode.Locked;
+        }
+    }
 }
