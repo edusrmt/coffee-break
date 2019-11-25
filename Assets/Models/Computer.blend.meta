@@ -1,28 +1,15 @@
 fileFormatVersion: 2
-guid: 74b2ba4750630914fb2d0ed48e20206a
+guid: b971254bdcfdea54189c346db7184b2a
 ModelImporter:
   serializedVersion: 23
   fileIDToRecycleName:
     100000: //RootNode
-    100002: Cup
-    100004: Liquid
     400000: //RootNode
-    400002: Cup
-    400004: Liquid
-    2100000: unnamed
-    2100002: Material
+    2100000: Material
     2300000: //RootNode
-    2300002: Cup
-    2300004: Liquid
     3300000: //RootNode
-    3300002: Cup
-    3300004: Liquid
-    4300000: Plane
-    4300002: Liquid
-    4300004: Cup
+    4300000: Cube
     6400000: //RootNode
-    6400002: Cup
-    6400004: Liquid
     7400000: Default Take
     9500000: //RootNode
   externalObjects: {}

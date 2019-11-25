@@ -30,7 +30,7 @@ public class CoffeeMachine : MonoBehaviour, Interactable
     {
         switch (currentState) {
             case Status.Filling:
-            cup.drinkAmount += 1 / timeToFill * Time.deltaTime;
+            cup.Fill(1 / timeToFill * Time.deltaTime);
             break;
         }
     }

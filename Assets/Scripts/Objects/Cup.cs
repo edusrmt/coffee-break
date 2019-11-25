@@ -3,7 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class Cup : MonoBehaviour, Interactable {
-    public float drinkAmount = 0;
+    public float drinkAmount = 0;  
+    GameObject liquid;  
 
     public enum Status {
         Free,
@@ -14,6 +15,10 @@ public class Cup : MonoBehaviour, Interactable {
 
     public Status currentState = Status.Free;
     bool stateChanged = false;
+
+    void Start () {
+        liquid = transform.Find("Liquid").gameObject;
+    }
 
     void LateUpdate () {
         switch (currentState) {
@@ -42,6 +47,20 @@ public class Cup : MonoBehaviour, Interactable {
         transform.rotation = Quaternion.Euler(-90, 0, 0);
         GameObject.Find("Player").GetComponent<PlayerBehaviour>().holdingObject = false;
         currentState = Status.Free;
+    }
+
+    public void Fill (float amount) {
+        if (drinkAmount == 0) {
+            liquid.GetComponent<Renderer>().material.SetColor("_Color", Color.black);
+        }
+
+        if (drinkAmount < 1) {
+            drinkAmount += amount;
+            liquid.transform.localPosition = new Vector3(0, 0, 0.075f * drinkAmount);
+            liquid.transform.localScale = new Vector3(1 + (0.25f * drinkAmount), 1 + (0.25f * drinkAmount), 1);
+        } else if (drinkAmount > 1) {
+            drinkAmount = 1;
+        }
     }
 
     public void OnInteract () {
