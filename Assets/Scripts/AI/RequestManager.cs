@@ -5,28 +5,49 @@ using UnityEngine.UI;
 
 public class RequestManager : MonoBehaviour {
     public Text requestText;
+    public Text newText;
+    public Button deliverButton;
+    public Button createButton;
     public List<Request> requests = new List<Request>();
+    public Queue<Request> preOrder = new Queue<Request>();
     int requestIndex = 0;
     int requestCount = 0;
 
-    void Start () {
+    ClientManager clients;
 
+    void Start () {
+        clients = GetComponent<ClientManager>();
     }
 
     void Update () {
         if (Input.GetKeyDown(KeyCode.Mouse1)) {
             NewRequest();
-        }
+        }        
     }
 
-    void NewRequest() {
+    public void NewRequest() {
         // ESPRESSO
         int dose = (int) Random.Range(1, 4);
-        Request req = new Request(requestCount, dose);
+
+        // CREATE CLIENT
+        Client cli = clients.SpawnClient();
+        Request req = new Request(requestCount, cli, dose);
         requestCount++;
+        cli.myRequest = req;
+        newText.gameObject.SetActive(true);
+        createButton.interactable = true;
+        preOrder.Enqueue(req);   
+    }
+
+    public void AcceptRequest () {
+        Request req = preOrder.Dequeue();
         requestIndex = requests.Count;
         requests.Add(req);
-        RenderRequest(requestIndex);
+        clients.OrderReceived();
+        newText.gameObject.SetActive(preOrder.Count > 0); 
+        createButton.interactable = preOrder.Count > 0;
+        deliverButton.interactable = true;
+        RenderRequest(requestIndex); 
     }
 
     public void NextRequest () {
@@ -41,6 +62,7 @@ public class RequestManager : MonoBehaviour {
     public void DeliverRequest ()
     {
         requests.RemoveAt(requestIndex);
+        deliverButton.interactable = requests.Count > 0;
         RenderRequest(requestIndex);
     }
 
@@ -51,7 +73,7 @@ public class RequestManager : MonoBehaviour {
             requestText.text = "ID: " + req.id + "\nCOFFEE AMOUNT: " + req.coffeeAmount + "/3";
         } else if (requests.Count == 0)
         {
-            requestText.text = "NO REQUEST";
+            requestText.text = "NO ORDER";
         } else if (index >= requests.Count)
         {
             requestIndex = requests.Count - 1;

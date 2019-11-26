@@ -5,6 +5,11 @@ using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
+    public float popularity = 100;
+    public int daysCount = 1;
+    public float clientBalance = 3;
+    public float extraFactor = 0.1f;
+
     void Awake () {
         DontDestroyOnLoad(gameObject);
         // SceneManager.LoadScene("Gameplay");
