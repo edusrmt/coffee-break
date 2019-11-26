@@ -19,6 +19,8 @@ public class CoffeeMachine : MonoBehaviour, Interactable
     [SerializeField]
     float timeToFill = 30;
 
+    public string myDrink = "Coffee";
+
     // Start is called before the first frame update
     void Start()
     {
@@ -30,7 +32,8 @@ public class CoffeeMachine : MonoBehaviour, Interactable
     {
         switch (currentState) {
             case Status.Filling:
-            cup.Fill(1 / timeToFill * Time.deltaTime);
+            if (cup.Fill(myDrink, 1 / timeToFill * Time.deltaTime) >= 1)
+                currentState = Status.Idle;
             break;
         }
     }

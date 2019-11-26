@@ -17,6 +17,9 @@ public class LevelManager : MonoBehaviour
 
     float timer = 0;
 
+    float ordersDelivered = 0;
+    float satisfactionSum = 0;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -51,4 +54,9 @@ public class LevelManager : MonoBehaviour
         else
             timeText.text = min + ":0" + s;
     }
+
+    public void OrderDelivered (float satisfaction) {
+        ordersDelivered++;
+        satisfactionSum += satisfaction;
+    } 
 }

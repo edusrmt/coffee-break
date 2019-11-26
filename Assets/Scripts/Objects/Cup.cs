@@ -3,7 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class Cup : MonoBehaviour, Interactable {
-    public float drinkAmount = 0;  
+    public float coffeeAmount = 0;
+    public float milkAmount = 0;  
     GameObject liquid;  
 
     public enum Status {
@@ -15,6 +16,8 @@ public class Cup : MonoBehaviour, Interactable {
 
     public Status currentState = Status.Free;
     bool stateChanged = false;
+    public Color coffeeColor = new Color(43 / 255f, 34 / 255f, 34 / 255f);
+    public Color milkColor = new Color(255 / 255f, 247 / 255f, 217 / 255f);
 
     void Start () {
         liquid = transform.Find("Liquid").gameObject;
@@ -30,7 +33,8 @@ public class Cup : MonoBehaviour, Interactable {
                 Ray ray = Camera.main.ScreenPointToRay(new Vector3(Screen.width / 2, Screen.height / 2, 0));
 
                 if (Physics.Raycast(ray, out hit, 2)) {
-                    Replace(hit.point);
+                    if (hit.transform.name != "Computer")
+                        Replace(hit.point);
                 }
             }
 
@@ -49,18 +53,32 @@ public class Cup : MonoBehaviour, Interactable {
         currentState = Status.Free;
     }
 
-    public void Fill (float amount) {
-        if (drinkAmount == 0) {
-            liquid.GetComponent<Renderer>().material.SetColor("_Color", Color.black);
-        }
+    public float Fill (string drink, float amount) {
+        if (drink == "Coffee")
+            coffeeAmount += amount;
+        else if (drink == "Milk")
+            milkAmount += amount;
+
+        float drinkAmount = coffeeAmount + milkAmount;
+
+        Color liquidColor;
+
+        if (coffeeAmount == 0)
+            liquidColor = Color.white;
+        else
+            liquidColor = Color.Lerp(coffeeColor, milkColor, milkAmount / coffeeAmount / 4f);
+
+        Debug.Log("Ratio: " + milkAmount / coffeeAmount / 2);
+        liquid.GetComponent<Renderer>().material.SetColor("_Color", liquidColor);        
 
         if (drinkAmount < 1) {
-            drinkAmount += amount;
             liquid.transform.localPosition = new Vector3(0, 0, 0.075f * drinkAmount);
             liquid.transform.localScale = new Vector3(1 + (0.25f * drinkAmount), 1 + (0.25f * drinkAmount), 1);
         } else if (drinkAmount > 1) {
             drinkAmount = 1;
         }
+
+        return drinkAmount;
     }
 
     public void OnInteract () {

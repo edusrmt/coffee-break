@@ -26,12 +26,12 @@ public class RequestManager : MonoBehaviour {
     }
 
     public void NewRequest() {
-        // ESPRESSO
-        int dose = (int) Random.Range(1, 4);
+        int coffee = (int) Random.Range(1, 4);
+        int milk = (int) Random.Range(0, 3 - coffee);
 
         // CREATE CLIENT
         Client cli = clients.SpawnClient();
-        Request req = new Request(requestCount, cli, dose);
+        Request req = new Request(requestCount, cli, coffee, milk);
         requestCount++;
         cli.myRequest = req;
         newText.gameObject.SetActive(true);
@@ -61,6 +61,8 @@ public class RequestManager : MonoBehaviour {
 
     public void DeliverRequest ()
     {
+        Request req = requests[requestIndex];
+        clients.GoToFront(req);
         requests.RemoveAt(requestIndex);
         deliverButton.interactable = requests.Count > 0;
         RenderRequest(requestIndex);
@@ -70,7 +72,7 @@ public class RequestManager : MonoBehaviour {
         if (requests.Count > 0 && index >= 0 && index < requests.Count)
         {
             Request req = requests[index];
-            requestText.text = "ID: " + req.id + "\nCOFFEE AMOUNT: " + req.coffeeAmount + "/3";
+            requestText.text = "ID: " + req.id + "\nCOFFEE AMOUNT: " + req.coffeeAmount + "/3\nMILK AMOUNT: " + req.milkAmount + "/3";
         } else if (requests.Count == 0)
         {
             requestText.text = "NO ORDER";

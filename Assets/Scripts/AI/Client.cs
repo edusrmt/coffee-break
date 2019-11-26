@@ -5,16 +5,26 @@ using UnityEngine;
 public class Client : MonoBehaviour
 {
     public Request myRequest;
+    public float requirementLevel = 0.1f;
 
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
+    public void ReceiveOrder (Cup order) {
+        float satisfaction = 100;
 
-    // Update is called once per frame
-    void Update()
-    {
-        
+        float coffeeDiff = Mathf.Abs(order.coffeeAmount - myRequest.coffeeAmount / 3f);
+        float milkDiff = Mathf.Abs(order.milkAmount - myRequest.milkAmount / 3f);
+
+        if (coffeeDiff > requirementLevel) {
+            satisfaction -= coffeeDiff * 100;
+        }
+
+        if (milkDiff > requirementLevel) {
+            satisfaction -= milkDiff * 100;
+        }
+
+        Debug.Log("Satisfaction of " + satisfaction);
+
+        GameObject.Find("Level Manager").GetComponent<LevelManager>().OrderDelivered(satisfaction);
+        Destroy(order.gameObject);
+        Destroy(gameObject);
     }
 }

@@ -19,6 +19,7 @@ public class MouseLook : MonoBehaviour
 
     void Start () {
         Cursor.lockState = CursorLockMode.Locked;
+        Cursor.visible = false;
     }
 
     void Update () {
@@ -41,8 +42,10 @@ public class MouseLook : MonoBehaviour
 
         if (Cursor.lockState == CursorLockMode.Locked) {
             Cursor.lockState = CursorLockMode.None;
+            Cursor.visible = true;
         } else {
             Cursor.lockState = CursorLockMode.Locked;
+            Cursor.visible = false;
         }
     }
 }
